@@ -4,7 +4,7 @@ import logoImg from '../image/logo.svg';
 import logoIn from '../image/sign.svg';
 
 const NavBarStyled = styled.header`
-position: flex;
+position: fixed;
 top: 0;
 left: 0;
 z-index: 999;
@@ -32,7 +32,9 @@ const ImgLogo = styled.img`
 width: 50px;
 `;
 
-const Login = styled.a`
+const Login = styled.button`
+background-color: transparent;
+border-color: transparent;
 display: flex;
 flex-direction: column;
 align-items: center;
