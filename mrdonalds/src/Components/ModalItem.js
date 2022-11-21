@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
+import { ButtonCheckOut } from './ButtonCheckOut';
 
 const Overlay = styled.div`
 position: fixed;
@@ -15,7 +16,6 @@ z-index: 20;
 `;
 
 const Modal = styled.div`
-padding-bottom: 43px;
 display: flex;
 flex-direction: column;
 align-items: center;
@@ -32,24 +32,25 @@ width: 100%;
 background-image: url(${({ img }) => img});
 background-size: cover;
 background-position: center;
-margin-bottom: center;
-
-
 `;
 
-const Container = styled.div`
+const Content = styled.section`
+display: flex;
+flex-direction: column;
+justify-content: space-between;
 width: 100%;
+height: calc(100% - 200px);
+padding: 30px;
 `;
 
-const AboutItem = styled.div`
+const HeaderContent = styled.div`
 display: flex;
 justify-content: space-between;
 width: 100%;
-padding: 20px 53px 43px 37px;
 `;
 
 const MenuText = styled.p`
-font-family: 'Pacifico';
+font-family: 'Pacifico', cursive;
 font-style: normal;
 font-weight: 400;
 font-size: 30px;
@@ -57,15 +58,7 @@ line-height: 53px;
 color: #000000;
 `;
 
-const Button = styled.button`
-padding: 20px 73px 20px 73px;
-background: #299B01;
-border: none;
-width: min-content;
-font-size: 21px;
-line-height: 25px;
-color: #FFFFFF;
-`;
+
 export const ModalItem = ({ openItem, setOpenItem }) => {
   function closeModal(e) {
     if (e.target.id === "overlay")
@@ -75,15 +68,15 @@ export const ModalItem = ({ openItem, setOpenItem }) => {
   return (
     <Overlay id="overlay" onClick={closeModal}>
       <Modal>
-        <Container>
-          <Banner img={openItem.img} />
-          <AboutItem>
+        <Banner img={openItem.img} />
+        <Content>
+          <HeaderContent>
             <MenuText>{openItem.name}</MenuText>
             <MenuText>{openItem.price.toLocaleString('ru-RU',
               { style: 'currency', currency: 'RUB' })}</MenuText>
-          </AboutItem>
-        </Container>
-        <Button>Добавить</Button>
+          </HeaderContent>
+          <ButtonCheckOut >Добавить</ButtonCheckOut>
+        </Content>
 
       </Modal>
     </Overlay>
