@@ -3,10 +3,46 @@ import styled from 'styled-components';
 import trashImage from '../../image/trash.svg';
 import { formatCurrency, totalPriceItem } from '../Functions/secondaryFunction';
 
-const OrderItemStyled = styled.li`
+
+
+let OrderItemStyled = styled.li`
+position: relative;
 display: flex;
-margin: 15px 0;
+margin: 15px 0 38px;
+&:after {
+  content: "";
+  position: absolute;
+  top: 30px;
+  left: 0;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  color: #9A9A9A;
+}
 `;
+
+const toppings = (str) => (
+  OrderItemStyled = styled.li`
+    position: relative;
+    display: flex;
+    margin: 15px 0 38px;
+    &:after {
+      content: "${str}";
+      position: absolute;
+      top: 30px;
+      left: 0;
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 16px;
+      color: #9A9A9A;
+}
+`
+);
+
 
 const ItemName = styled.span`
 flex-grow: 1;
@@ -31,11 +67,15 @@ background-repeat: no-repeat;
 cursor: pointer;
 `;
 
-export const OrderListItem = ({ order }) => (
-  <OrderItemStyled>
-    <ItemName>{order.name}</ItemName>
-    <span>{order.count}</span>
-    <ItemPrice>{formatCurrency(totalPriceItem(order))}</ItemPrice>
-    <TrashButton />
-  </OrderItemStyled>
-);
+export const OrderListItem = ({ order }) => {
+  const strToppings = order.toppings.filter(item => item.checked).map(item => item.name).join(", ");
+  toppings(strToppings);
+  return (
+    <OrderItemStyled>
+      <ItemName>{order.name}</ItemName>
+      <span>{order.count}</span>
+      <ItemPrice>{formatCurrency(totalPriceItem(order))}</ItemPrice>
+      <TrashButton />
+    </OrderItemStyled >
+  );
+}
