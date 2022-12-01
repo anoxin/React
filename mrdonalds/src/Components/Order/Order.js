@@ -47,9 +47,8 @@ const EmtyList = styled.p`
 text-align: center;
 `;
 
-export const Order = ({ orders }) => {
+export const Order = ({ orders, setOrders }) => {
   const total = orders.reduce((result, order) => totalPriceItem(order) + result, 0);
-  console.log(orders);
   const count = orders.reduce((result, order) => order.count + result, 0);
   return (
     <OrderStyled>
@@ -57,7 +56,7 @@ export const Order = ({ orders }) => {
       <OrderContent>
         {orders.length ?
           <OrderList>
-            {orders.map(order => <OrderListItem order={order} />)}
+            {orders.map(order => <OrderListItem key={order.id} {...{ orders, order, setOrders }} />)}
           </OrderList> :
           <EmtyList>Список заказов пуст</EmtyList>}
       </OrderContent>
