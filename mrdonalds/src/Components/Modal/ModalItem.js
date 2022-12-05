@@ -73,9 +73,10 @@ justify-content: space-between;
 
 
 export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
-  const counter = useCount();
+  const counter = useCount(openItem.count);
   const toppings = useToppings(openItem);
   const choices = useChoices();
+  const isEdit = openItem.index > -1;
 
   const closeModal = e => {
     if (e.target.id === "overlay")
@@ -85,14 +86,23 @@ export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
   const order = {
     ...openItem,
     count: counter.count,
-    toppings: toppings.toppings,
+    topping: toppings.toppings,
     choice: choices.choice
   };
+
+  const editOrder = () => {
+    const newOrders = [...orders];
+    newOrders[openItem.index] = order;
+    setOrders(newOrders);
+    setOpenItem(null);
+  }
 
   const addToOrder = () => {
     setOrders([...orders, order]);
     setOpenItem(null);
   }
+
+
 
   return (
     <Overlay id="overlay" onClick={closeModal}>
@@ -110,7 +120,9 @@ export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
             <span>Цена:</span>
             <span>{formatCurrency(totalPriceItem(order))}</span>
           </TotalPriceItem>
-          <ButtonCheckOut onClick={addToOrder} disabled={order.choices && !order.choice}>Добавить</ButtonCheckOut>
+          <ButtonCheckOut
+            onClick={isEdit ? editOrder : addToOrder}
+            disabled={order.choices && !order.choice}>{isEdit ? "Редактировать" : "Добавить"}</ButtonCheckOut>
         </Content>
 
       </Modal>

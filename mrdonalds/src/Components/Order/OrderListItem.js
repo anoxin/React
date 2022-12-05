@@ -27,6 +27,7 @@ color: #9A9A9A;
 
 const ItemName = styled.span`
 flex-grow: 1;
+cursor: pointer;
 `;
 
 const ItemPrice = styled.span`
@@ -48,20 +49,21 @@ background-repeat: no-repeat;
 cursor: pointer;
 `;
 
-export const OrderListItem = ({ orders, order, setOrders }) => {
-  const strToppings = order.toppings.filter(item => item.checked).map(item => item.name).join(", ");
-  const deleteItems = (e) => {
-
-    setOrders(orders.filter(item => item.id !== +e.target.id))
-
+export const OrderListItem = ({ order, index, deleteItem, setOpenItem }) => {
+  const strToppings = order.topping.filter(item => item.checked).map(item => item.name).join(", ");
+  const openMoldal = (e) => {
+    if (e.target.localName !== "button") {
+      setOpenItem({ ...order, index })
+    }
   }
 
+
   return (
-    <OrderItemStyled>
+    <OrderItemStyled onClick={(e) => openMoldal(e)} >
       <ItemName>{order.name} {order.choice}</ItemName>
       <span>{order.count}</span>
       <ItemPrice>{formatCurrency(totalPriceItem(order))}</ItemPrice>
-      <TrashButton id={order.id} onClick={(e) => deleteItems(e)} />
+      <TrashButton onClick={() => deleteItem(index)} />
       {order.toppings && <Toppings>
         {strToppings}
       </Toppings>}
