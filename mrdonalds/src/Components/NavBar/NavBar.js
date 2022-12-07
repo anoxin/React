@@ -50,15 +50,42 @@ font-size: 16px;
 line-height: 19px;
 color: #FFFFFF;
 `;
-export const NavBar = () => (
+const User = styled.div`
+display: flex;
+align-items: center;
+text-align: center;`;
+
+const LogOut = styled.span`
+margin-right: 30px;
+font-size: 20px;
+font-weight: 700;
+cursor: pointer;
+`;
+
+const Figure = styled.figure`
+margin: 0 30px;
+`;
+
+export const NavBar = ({ authentication, logIn, logOut }) => (
   <NavBarStyled>
     <Logo>
       <ImgLogo src={logoImg} alt="logo" />
       <H1>mrDonalds</H1>
     </Logo>
-    <Login href='#'>
-      <LoginIcon src={logoIn} alt="logoIn" />
-      <LoginIn>войти</LoginIn>
-    </Login>
+
+    {authentication ?
+      <User>
+        <Figure>
+          <LoginIcon src={logoIn} alt={authentication.displayName} />
+          <figcaption>{authentication.displayName}</figcaption>
+        </Figure>
+        <LogOut title="выйти" onClick={logOut}>X</LogOut>
+      </User>
+      :
+      <Login onClick={logIn} href='#'>
+        <LoginIcon src={logoIn} alt="logoIn" />
+        <LoginIn>войти</LoginIn>
+      </Login>}
+
   </NavBarStyled >
 )

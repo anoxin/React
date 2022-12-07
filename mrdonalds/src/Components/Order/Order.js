@@ -47,7 +47,7 @@ const EmtyList = styled.p`
 text-align: center;
 `;
 
-export const Order = ({ orders, setOrders, setOpenItem }) => {
+export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn }) => {
   const deleteItem = index => {
     const newOrders = [...orders];
     newOrders.splice(index, 1);
@@ -77,7 +77,7 @@ export const Order = ({ orders, setOrders, setOpenItem }) => {
         <span>{count}</span>
         <TotalPrice>{formatCurrency(total)}</TotalPrice>
       </Total>
-      <ButtonCheckOut>Оформить</ButtonCheckOut>
+      <ButtonCheckOut onClick={!authentication && orders.length ? logIn : null}>Оформить</ButtonCheckOut>
     </OrderStyled>
   )
 }
