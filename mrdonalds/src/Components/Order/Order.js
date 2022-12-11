@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 import { ButtonCheckOut } from './ButtonCheckOut';
 import { OrderListItem } from './OrderListItem';
-import { formatCurrency, totalPriceItem } from '../Functions/secondaryFunction';
+import { formatCurrency, totalPriceItem, projection } from '../Functions/secondaryFunction';
 
 const OrderStyled = styled.section`
 position: fixed;
@@ -11,7 +11,7 @@ flex-direction: column;
 top: 80px;
 left: 0;
 background: #fff;
-min-width: 380px;
+width: 380px;
 height: calc(100% - 80px);
 box-shadow: 3px 4px 5px rgba(0, 0, 0, 0.25);
 padding: 20px;
@@ -47,7 +47,26 @@ const EmtyList = styled.p`
 text-align: center;
 `;
 
-export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn }) => {
+const rulesData = {
+  name: ['name'],
+  price: ['price'],
+  count: ['count'],
+  toppings: ['topping', array => array.filter((obj) => obj.checked).map(obj => obj.name), array => array.length ? array : 'no topping'],
+  choices: ['choice', item => item ? item : 'no choices']
+}
+
+export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn, firebaseDatabase }) => {
+  const dataBase = firebaseDatabase();
+
+  const sendOrder = () => {
+    const newOrder = orders.map(projection(rulesData))
+    dataBase.ref('orders').push().set({
+      nameClient: authentication.displayName,
+      email: authentication.email,
+      order: newOrder
+    });
+
+  }
   const deleteItem = index => {
     const newOrders = [...orders];
     newOrders.splice(index, 1);
@@ -77,7 +96,8 @@ export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn })
         <span>{count}</span>
         <TotalPrice>{formatCurrency(total)}</TotalPrice>
       </Total>
-      <ButtonCheckOut onClick={!authentication && orders.length ? logIn : null}>Оформить</ButtonCheckOut>
+      <ButtonCheckOut onClick={() => !authentication && orders.length ? logIn() : (() => { sendOrder(); setOrders([]) })()}>Оформить</ButtonCheckOut>
+      {/* /* sendOrder(); */}
     </OrderStyled>
   )
 }

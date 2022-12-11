@@ -21,7 +21,7 @@ left: 0;
 width: 100%;
 height: 100%;
 background-color: rgba(0,0,0, .5);
-z-index: 20;
+z-index: 999;
 `;
 
 const Modal = styled.div`
@@ -72,7 +72,7 @@ justify-content: space-between;
 `;
 
 
-export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
+export const ModalItem = ({ openItem, setOpenItem, orders, setOrders, setTitle }) => {
   const counter = useCount(openItem.count);
   const toppings = useToppings(openItem);
   const choices = useChoices();
@@ -105,7 +105,7 @@ export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
 
 
   return (
-    <Overlay id="overlay" onClick={closeModal}>
+    <Overlay id="overlay" onClick={(e) => { closeModal(e); setTitle('mrDonalds') }}>
       <Modal>
         <Banner img={openItem.img} />
         <Content>

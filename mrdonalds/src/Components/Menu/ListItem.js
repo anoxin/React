@@ -40,11 +40,11 @@ z-index: 1;
 }
 `;
 
-export const ListItem = ({ itemList, setOpenItem }) => (
+export const ListItem = ({ itemList, setOpenItem, setTitle }) => (
   <List>
     {itemList.map(item => (
       <Item key={item.id} img={item.img}
-        onClick={() => setOpenItem(item)}>
+        onClick={() => { setOpenItem(item); setTitle(item.name) }}>
         <p>{item.name}</p>
         <p>{formatCurrency(item.price)}</p>
       </Item>

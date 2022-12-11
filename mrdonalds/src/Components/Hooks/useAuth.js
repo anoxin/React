@@ -8,21 +8,19 @@ export function useAuth(authFirebase) {
 
   const provider = new authFirebase.GoogleAuthProvider();
 
-  const logIn = () => auth.signInWithPopup(provider);
+  const logIn = () => auth.signInWithPopup(provider)
 
   const logOut = () => auth.signOut()
-    .then()
     .catch(err => console.error())
 
   useEffect(() => {
     auth.onAuthStateChanged(user => {
-      console.log(user)
       if (user) {
         setAuthentication(user)
       } else {
         setAuthentication(null)
       }
     })
-  }, [authentication]);
+  }, [auth, authentication]);
   return { authentication, logIn, logOut };
 }

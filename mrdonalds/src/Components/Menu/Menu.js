@@ -14,18 +14,18 @@ const SectionMenu = styled.section`
 padding: 30px
 `;
 
-export const Menu = ({ setOpenItem }) => (
+export const Menu = ({ setOpenItem, setTitle }) => (
   <MenuStyled>
     <Banner />
     <SectionMenu>
       <h2>Бургеры</h2>
       <ListItem itemList={dbMenu.burger}
-        setOpenItem={setOpenItem} />
+        setOpenItem={setOpenItem} setTitle={setTitle} />
     </SectionMenu>
     <SectionMenu>
       <h2>Закуски / Напитки</h2>
       <ListItem itemList={dbMenu.other}
-        setOpenItem={setOpenItem} />
+        setOpenItem={setOpenItem} setTitle={setTitle}/>
     </SectionMenu>
   </MenuStyled>
 )
