@@ -29,7 +29,7 @@ function App() {
   const auth = useAuth(firebase.auth);
   const openItem = useOpenItem();
   const orders = useOrders();
-  const title = useTitle();
+  useTitle(openItem.openItem);
 
   return (
     <>
@@ -40,8 +40,8 @@ function App() {
         {...openItem}
         {...auth}
         firebaseDatabase={firebase.database} />
-      <Menu {...openItem} {...title} />
-      {openItem.openItem && <ModalItem {...openItem} {...orders} {...title} />}
+      <Menu {...openItem} />
+      {openItem.openItem && <ModalItem {...openItem} {...orders} />}
     </>
   );
 }

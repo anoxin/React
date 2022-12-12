@@ -72,15 +72,16 @@ justify-content: space-between;
 `;
 
 
-export const ModalItem = ({ openItem, setOpenItem, orders, setOrders, setTitle }) => {
+export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
   const counter = useCount(openItem.count);
   const toppings = useToppings(openItem);
   const choices = useChoices();
   const isEdit = openItem.index > -1;
 
   const closeModal = e => {
-    if (e.target.id === "overlay")
+    if (e.target.id === "overlay") {
       setOpenItem(null)
+    }
   }
 
   const order = {
@@ -105,7 +106,7 @@ export const ModalItem = ({ openItem, setOpenItem, orders, setOrders, setTitle }
 
 
   return (
-    <Overlay id="overlay" onClick={(e) => { closeModal(e); setTitle('mrDonalds') }}>
+    <Overlay id="overlay" onClick={(e) => { closeModal(e) }}>
       <Modal>
         <Banner img={openItem.img} />
         <Content>
