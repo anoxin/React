@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components';
+import { OrderTitle, Total, TotalPrice } from '../Style/StyleComponent';
 import { ButtonCheckOut } from './ButtonCheckOut';
 import { OrderListItem } from './OrderListItem';
-import { formatCurrency, totalPriceItem, projection } from '../Functions/secondaryFunction';
+import { formatCurrency, totalPriceItem } from '../Functions/secondaryFunction';
+import { Context } from '../Functions/context';
 
 const OrderStyled = styled.section`
 position: fixed;
@@ -17,11 +19,6 @@ box-shadow: 3px 4px 5px rgba(0, 0, 0, 0.25);
 padding: 20px;
 `;
 
-const OrderTitle = styled.h2`
-text-align: center;
-margin-bottom: 30px;
-`;
-
 const OrderContent = styled.div`
 flex-grow: 1;
 
@@ -29,44 +26,20 @@ flex-grow: 1;
 
 const OrderList = styled.ul``;
 
-const Total = styled.div`
-display: flex;
-margin: 0 35px 30px;
-& span:first-child { 
-  flex-grow: 1;
-}
-`;
-
-const TotalPrice = styled.span`
-text-align: right;
-min-width: 65px;
-margin-left: 20px;
-`;
 
 const EmtyList = styled.p`
 text-align: center;
 `;
 
-const rulesData = {
-  name: ['name'],
-  price: ['price'],
-  count: ['count'],
-  toppings: ['topping', array => array.filter((obj) => obj.checked).map(obj => obj.name), array => array.length ? array : 'no topping'],
-  choices: ['choice', item => item ? item : 'no choices']
-}
+export const Order = () => {
+  const {
+    orders: { orders, setOrders },
+    openItem: { setOpenItem },
+    auth: { authentication, logIn },
+    orderConfirm: { setOpenOrderConfirm }
+  } = useContext(Context)
 
-export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn, firebaseDatabase }) => {
-  const dataBase = firebaseDatabase();
 
-  const sendOrder = () => {
-    const newOrder = orders.map(projection(rulesData))
-    dataBase.ref('orders').push().set({
-      nameClient: authentication.displayName,
-      email: authentication.email,
-      order: newOrder
-    });
-
-  }
   const deleteItem = index => {
     const newOrders = [...orders];
     newOrders.splice(index, 1);
@@ -91,13 +64,13 @@ export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn, f
           </OrderList> :
           <EmtyList>Список заказов пуст</EmtyList>}
       </OrderContent>
-      <Total>
+      {orders.length ? <Total>
         <span>Итого</span>
         <span>{count}</span>
         <TotalPrice>{formatCurrency(total)}</TotalPrice>
-      </Total>
-      <ButtonCheckOut onClick={() => !authentication && orders.length ? logIn() : (() => { sendOrder(); setOrders([]) })()}>Оформить</ButtonCheckOut>
-      {/* /* sendOrder(); */}
+      </Total> : null}
+      {orders.length ? <ButtonCheckOut onClick={() => !authentication && orders.length ? logIn() : (() => { setOpenOrderConfirm(true) })()}
+      >Оформить</ButtonCheckOut> : null}
     </OrderStyled>
   )
 }

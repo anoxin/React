@@ -8,5 +8,5 @@ export function useChoices() {
     setChoice(e.target.value);
   }
 
-  return { choice, changeChoices }
+  return { choice, changeChoices, setChoice }
 }

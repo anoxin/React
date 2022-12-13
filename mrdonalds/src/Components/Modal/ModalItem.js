@@ -1,28 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components';
+import { Overlay } from '../Style/StyleComponent';
 import { ButtonCheckOut } from '../Order/ButtonCheckOut';
 import { CountItem } from './CountItem';
 import { useCount } from '../Hooks/useCount';
 import { formatCurrency, totalPriceItem } from '../Functions/secondaryFunction';
 import { Toppings } from './Toppings';
 import { Choices } from './Choices';
-import { useToppings } from '../Hooks/useToppings'
-import { useChoices } from '../Hooks/useChoices'
+import { useToppings } from '../Hooks/useToppings';
+import { useChoices } from '../Hooks/useChoices';
+import { Context } from '../Functions/context';
 
 
-
-const Overlay = styled.div`
-position: fixed;
-display: flex;
-justify-content: center;
-align-items: center;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background-color: rgba(0,0,0, .5);
-z-index: 999;
-`;
 
 const Modal = styled.div`
 display: flex;
@@ -72,7 +61,11 @@ justify-content: space-between;
 `;
 
 
-export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
+export const ModalItem = () => {
+  const {
+    openItem: { openItem, setOpenItem },
+    orders: { orders, setOrders }
+  } = useContext(Context);
   const counter = useCount(openItem.count);
   const toppings = useToppings(openItem);
   const choices = useChoices();
@@ -123,7 +116,7 @@ export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
           </TotalPriceItem>
           <ButtonCheckOut
             onClick={isEdit ? editOrder : addToOrder}
-            disabled={order.choices && !order.choice}>{isEdit ? "Редактировать" : "Добавить"}</ButtonCheckOut>
+            disabled={order.choices && !order.choice && !openItem.choice}>{isEdit ? "Редактировать" : "Добавить"}</ButtonCheckOut>
         </Content>
 
       </Modal>

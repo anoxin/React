@@ -18,7 +18,8 @@ cursor: pointer;
 display: block;
 `;
 
-export function Choices({ openItem, choice, changeChoices }) {
+export function Choices({ openItem, choice, setChoice, changeChoices }) {
+
   return (
     <>
       <h3>Выбирайте:</h3>

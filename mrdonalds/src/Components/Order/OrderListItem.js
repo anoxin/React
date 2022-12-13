@@ -1,7 +1,7 @@
-import React from 'react';
 import styled from 'styled-components';
 import trashImage from '../../image/trash.svg';
 import { formatCurrency, totalPriceItem } from '../Functions/secondaryFunction';
+
 
 
 
@@ -56,7 +56,6 @@ export const OrderListItem = ({ order, index, deleteItem, setOpenItem }) => {
       setOpenItem({ ...order, index })
     }
   }
-
 
   return (
     <OrderItemStyled onClick={(e) => openMoldal(e)} >
